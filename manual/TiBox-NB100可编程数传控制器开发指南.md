@@ -57,13 +57,13 @@ TiBox.NB100类提供了TiBox-N100所支持的硬件资源访问， 包括RS485, 
 | 方法                                                         | 说明                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | TiSerialPort getRS485(int baudRate, int dataBitNum, int stopBitNum, int parity) | 获取RS485接口， 参数：波特率，数据位，停止位，校验位         |
-| TiSerialPort getRS232(int baudRate, int dataBitNum, int stopBitNum, int parity) | 获取RS232接口，参数：波特率，数据位，停止位，校验位         |
+| TiSerialPort getRS232(int baudRate, int dataBitNum, int stopBitNum, int parity) | 获取RS232接口，参数：波特率，数据位，停止位，校验位          |
 | void networkConnet(String serverIp, int port)                | 连接NB-IOT云平台， 建议使用电信云。serverIp/port: 电信云平台IP 及端口 |
 | void networkCoAPSend(byte[] dataBuffer)                      | 发送数据到云平台, dataBuffer 待发送数据                      |
-| void turnOnLED(int id)                                       | 打开指定LED灯                                                |
-| void turnOffLED(int id)                                      | 关闭指定LED灯                                                |
-| void startFlashLED()                                         | 闪烁指定LED灯                                                |
-| void stopFlashLED()                                          | 停止指定LED灯                                                |
+| void turnOnLED(int id)                                       | 打开指定LED灯, id = 0 : LED 灯， id=1 : NET灯                |
+| void turnOffLED(int id)                                      | 关闭指定LED灯, id = 0 : LED 灯， id=1 : NET灯                |
+| void startFlashLED()                                         | 闪烁指定LED灯, id = 0 : LED 灯， id=1 : NET灯                |
+| void stopFlashLED()                                          | 停止指定LED灯, id = 0 : LED 灯， id=1 : NET灯                |
 | void setNBEventListener                                      | 设置NB-IOT平台数据监听对象                                   |
 
 #### IDeviceEventListener 数据监听
@@ -252,14 +252,12 @@ TiBox.NB100类提供了TiBox-N100所支持的硬件资源访问， 包括RS485, 
 
 ### 第一步 ：RS485 初始化
 
-创建RS485对象， 指定UART ID, 以及用于RS485半双工切换的GIPOPIN , 并设置通讯参数
+获取TiBox-NB100的RS485对象
 
 ```java
-		// 485端口 - UART 1, GPIO PORT 2 PIN 4
-		TiSerialPort rs485 = new TiSerialPort(1, 2, 4);
-		
-		// 通讯参数 9600，8，1，N
-		rs485.open(9600, 8, 1, TiUART.PARITY_NONE);
+		// 485端口
+		TiSerialPort rs485 = NB100.getRS485(9600, 8, 1, TiUART.PARITY_NONE);
+
 ```
 
 ### 第二步:  MODBUS  客户端设置
